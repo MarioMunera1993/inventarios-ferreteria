@@ -55,11 +55,11 @@ export const CustomersPage = () => {
             console.error(err);
 
             const message =
-                err.response?.data?.message ||
+                err.response?.data ||
                 "No fue posible eliminar el cliente.";
 
             await Alert.error({
-                title: "Error al eliminar",
+                title: "Cliente no eliminado",
                 text: message,
             });
         }
@@ -174,7 +174,7 @@ export const CustomersPage = () => {
                                             </th>
 
                                             <th className="p-4 font-medium">
-                                                Nombre Completo
+                                                Nombre
                                             </th>
 
                                             <th className="p-4 font-medium">
@@ -351,7 +351,7 @@ export const CustomersPage = () => {
                                 {/* Nombre */}
                                 <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
                                     <p className="text-xs font-semibold text-gray-500 uppercase">
-                                        Nombre Completo
+                                        Nombre
                                     </p>
 
                                     <p className="mt-1 text-gray-800 font-medium">

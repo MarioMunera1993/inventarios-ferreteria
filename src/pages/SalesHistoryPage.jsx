@@ -289,21 +289,6 @@ const SalesHistoryPage = () => {
     // Cantidad de ventas
     const totalSales = completedSales.length;
 
-    // Unidades vendidas
-    const totalUnitsSold = completedSales.reduce(
-        (total, sale) => {
-            return (
-                total +
-                (sale.details || []).reduce(
-                    (sum, detail) =>
-                        sum + Number(detail.quantity || 0),
-                    0
-                )
-            );
-        },
-        0
-    );
-
     // Total vendido
     const totalSold = completedSales.reduce(
         (total, sale) =>
@@ -336,37 +321,6 @@ const SalesHistoryPage = () => {
             TRANSFER: 0,
         }
     );
-
-    // Productos vendidos
-    const productsSold = {};
-
-    completedSales.forEach((sale) => {
-        (sale.details || []).forEach((detail) => {
-            const productId = detail.productId;
-
-            if (!productsSold[productId]) {
-                productsSold[productId] = {
-                    productId,
-                    productName: detail.productName,
-                    productCode: detail.productCode,
-                    quantity: 0,
-                    total: 0,
-                };
-            }
-
-            productsSold[productId].quantity += Number(
-                detail.quantity || 0
-            );
-
-            productsSold[productId].total += Number(
-                detail.subtotal || 0
-            );
-        });
-    });
-
-    const topProducts = Object.values(productsSold)
-        .sort((a, b) => b.quantity - a.quantity)
-        .slice(0, 10);
 
     return (
         <div className="p-6 space-y-6">
@@ -517,11 +471,10 @@ const SalesHistoryPage = () => {
                     <button
                         type="button"
                         onClick={handleToday}
-                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${
-                            activeDateFilter === "today"
+                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${activeDateFilter === "today"
                                 ? "bg-blue-600 text-white"
                                 : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                        }`}
+                            }`}
                     >
                         Hoy
                     </button>
@@ -529,11 +482,10 @@ const SalesHistoryPage = () => {
                     <button
                         type="button"
                         onClick={handleYesterday}
-                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${
-                            activeDateFilter === "yesterday"
+                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${activeDateFilter === "yesterday"
                                 ? "bg-blue-600 text-white"
                                 : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                        }`}
+                            }`}
                     >
                         Ayer
                     </button>
@@ -541,11 +493,10 @@ const SalesHistoryPage = () => {
                     <button
                         type="button"
                         onClick={handleThisWeek}
-                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${
-                            activeDateFilter === "week"
+                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${activeDateFilter === "week"
                                 ? "bg-blue-600 text-white"
                                 : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                        }`}
+                            }`}
                     >
                         Esta semana
                     </button>
@@ -553,11 +504,10 @@ const SalesHistoryPage = () => {
                     <button
                         type="button"
                         onClick={handleThisMonth}
-                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${
-                            activeDateFilter === "month"
+                        className={`px-3 py-1.5 text-sm rounded-lg transition font-medium ${activeDateFilter === "month"
                                 ? "bg-blue-600 text-white"
                                 : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                        }`}
+                            }`}
                     >
                         Este mes
                     </button>
@@ -582,167 +532,95 @@ const SalesHistoryPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                     {/* Ventas realizadas */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                        <p className="text-sm text-gray-500">
-                            Ventas realizadas
-                        </p>
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Ventas realizadas
+                                </p>
 
-                        <p className="text-2xl font-bold text-gray-800 mt-1">
-                            {totalSales}
-                        </p>
+                                <p className="text-2xl font-bold text-gray-800 mt-1">
+                                    {totalSales}
+                                </p>
 
-                        <p className="text-xs text-gray-400 mt-1">
-                            Ventas completadas
-                        </p>
-                    </div>
+                                <p className="text-xs text-gray-400 mt-1">
+                                    Ventas completadas
+                                </p>
+                            </div>
 
-                    {/* Unidades vendidas */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                        <p className="text-sm text-gray-500">
-                            Unidades vendidas
-                        </p>
-
-                        <p className="text-2xl font-bold text-gray-800 mt-1">
-                            {totalUnitsSold}
-                        </p>
-
-                        <p className="text-xs text-gray-400 mt-1">
-                            Productos vendidos
-                        </p>
+                            <div className="text-2xl">
+                                🧾
+                            </div>
+                        </div>
                     </div>
 
                     {/* Total vendido */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Total vendido
+                                </p>
 
-                        <p className="text-sm text-gray-500">
-                            Total vendido
+                                <p className="text-2xl font-bold text-green-600 mt-1">
+                                    {formatCurrency(totalSold)}
+                                </p>
+
+                                <p className="text-xs text-gray-400 mt-1">
+                                    Ventas completadas
+                                </p>
+                            </div>
+
+                            <div className="text-2xl">
+                                💰
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Métodos de pago */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+
+                        <p className="text-sm text-gray-500 mb-3">
+                            Dinero recibido
                         </p>
 
-                        <p className="text-2xl font-bold text-green-600 mt-1">
-                            {formatCurrency(totalSold)}
-                        </p>
+                        <div className="flex items-center justify-between gap-3">
 
-                        <p className="text-xs text-gray-400 mt-1">
-                            Dinero recibido en ventas completadas
-                        </p>
-
-                        {/* Métodos de pago */}
-                        <div className="mt-4 pt-3 border-t border-gray-100 space-y-2">
-
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2 text-gray-600">
-                                    <span>💵</span>
-                                    <span>Efectivo</span>
-                                </div>
-
-                                <span className="font-semibold text-gray-700">
+                            <div className="text-center">
+                                <span className="text-lg">💵</span>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Efectivo
+                                </p>
+                                <p className="text-xs font-semibold text-gray-700">
                                     {formatCurrency(paymentTotals.CASH)}
-                                </span>
+                                </p>
                             </div>
 
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2 text-gray-600">
-                                    <span>💳</span>
-                                    <span>Tarjeta</span>
-                                </div>
-
-                                <span className="font-semibold text-gray-700">
+                            <div className="text-center">
+                                <span className="text-lg">💳</span>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Tarjeta
+                                </p>
+                                <p className="text-xs font-semibold text-gray-700">
                                     {formatCurrency(paymentTotals.CARD)}
-                                </span>
+                                </p>
                             </div>
 
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2 text-gray-600">
-                                    <span>🔄</span>
-                                    <span>Transferencia</span>
-                                </div>
-
-                                <span className="font-semibold text-gray-700">
+                            <div className="text-center">
+                                <span className="text-lg">🔄</span>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Transferencia
+                                </p>
+                                <p className="text-xs font-semibold text-gray-700">
                                     {formatCurrency(paymentTotals.TRANSFER)}
-                                </span>
+                                </p>
                             </div>
 
                         </div>
                     </div>
-                </div>
-            </div>
 
-            {/* Productos vendidos */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-
-                <div className="mb-4">
-                    <h2 className="text-lg font-semibold text-gray-800">
-                        Productos vendidos
-                    </h2>
-
-                    <p className="text-sm text-gray-500">
-                        Productos con mayor cantidad de unidades vendidas.
-                    </p>
                 </div>
 
-                {topProducts.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500 text-sm">
-                        No hay productos vendidos en el período seleccionado.
-                    </div>
-                ) : (
-                    <div className="overflow-x-auto">
-
-                        <table className="w-full text-sm">
-
-                            <thead>
-                                <tr className="border-b border-gray-200 text-left text-gray-500">
-
-                                    <th className="pb-3 font-medium">
-                                        Producto
-                                    </th>
-
-                                    <th className="pb-3 font-medium">
-                                        Código
-                                    </th>
-
-                                    <th className="pb-3 font-medium text-right">
-                                        Unidades
-                                    </th>
-
-                                    <th className="pb-3 font-medium text-right">
-                                        Total
-                                    </th>
-
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                {topProducts.map((product) => (
-                                    <tr
-                                        key={product.productId}
-                                        className="border-b border-gray-100 last:border-0"
-                                    >
-
-                                        <td className="py-3 font-medium text-gray-800">
-                                            {product.productName}
-                                        </td>
-
-                                        <td className="py-3 text-gray-500">
-                                            {product.productCode}
-                                        </td>
-
-                                        <td className="py-3 text-right font-medium">
-                                            {product.quantity}
-                                        </td>
-
-                                        <td className="py-3 text-right font-medium">
-                                            {formatCurrency(product.total)}
-                                        </td>
-
-                                    </tr>
-                                ))}
-
-                            </tbody>
-
-                        </table>
-                    </div>
-                )}
             </div>
 
             {/* Historial */}
@@ -911,6 +789,7 @@ const SalesHistoryPage = () => {
                 )}
 
             </div>
+
         </div>
     );
 };
