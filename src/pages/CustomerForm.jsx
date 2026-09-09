@@ -317,7 +317,7 @@ export const CustomerForm = () => {
                         <div className="md:col-span-2">
 
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Nombre completo *
+                                Nombre *
                             </label>
 
                             <input
@@ -325,7 +325,7 @@ export const CustomerForm = () => {
                                 name="fullName"
                                 value={formData.fullName}
                                 onChange={handleChange}
-                                placeholder="Nombre completo del cliente"
+                                placeholder="Nombre del cliente"
                                 disabled={loading}
                                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                             />
